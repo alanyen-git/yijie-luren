@@ -25,9 +25,8 @@ function render(){
  const bonuses=[...Object.entries(core).map(([key,value])=>({key,label:coreLabels[key]||key,value})),...Object.entries(advanced).map(([key,value])=>({key,label:advancedLabels[key]||key,value}))].filter(x=>Number(x.value));
  const bonusHtml=bonuses.map(x=>`<div class="xu-gear-bonus"><span>${esc(x.label)}</span><b>${esc(format(x.key,x.value))}</b></div>`).join("")||'<div class="small">目前裝備沒有額外戰鬥加成。</div>';
  const html=`<section class="xu-gear-detail" aria-label="裝備明細"><div class="xu-gear-detail-head"><b>裝備部位與耐久</b><span class="small">${rows.length} 個裝備欄位</span></div><div class="xu-gear-slot-grid">${rows}</div><div class="xu-gear-bonus-panel"><b>裝備加成總覽</b><span class="small">只計算目前穿戴裝備，並依耐久與封印狀態套用遊戲規則。</span><div class="xu-gear-bonus-grid">${bonusHtml}</div></div></section>`;
- const hero=body.querySelector(".equipment-art-hero");
- if(!hero||body.querySelector(".xu-gear-detail"))return;
- hero.insertAdjacentHTML("afterend",html)
+ if(body.querySelector(".xu-gear-detail"))return;
+ body.insertAdjacentHTML("afterbegin",html)
 }
 function slotIcon(slot,d){return `<svg viewBox="0 0 120 120"><use href="./assets/art/item-skill-icons.svg#${iconFor(slot,d)}"></use></svg>`}
 function install(){

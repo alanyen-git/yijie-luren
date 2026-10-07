@@ -1033,3 +1033,7 @@ button:focus-visible{outline:2px solid #d9bd79;outline-offset:2px}
   .battle-skill-body .itemrow{grid-template-columns:minmax(0,1fr);align-items:stretch}.battle-skill-body .itemrow>button{width:100%;min-height:48px}
   .money-display{font-size:clamp(15px,5vw,20px)}
 }
+
+.hud-silver{padding:6px 2px 0;color:#f0d9a6;font-size:14px;text-align:right}.hud-silver b{color:#f6e7bc}
+
+button.inventory-chip{cursor:pointer;font-family:inherit;box-shadow:none;-webkit-tap-highlight-color:transparent}button.inventory-chip:active{background:#1d3128;border-color:#7fa58a}.inventory-category-title{scroll-margin-top:8px}

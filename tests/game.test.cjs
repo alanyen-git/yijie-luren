@@ -116,7 +116,7 @@ assert.ok(fs.readFileSync(path.join(app, "assets/css/app-theme.css"), "utf8").in
 assert.ok(mapTheme.includes("XUANYUAN-REGION-ATLAS-1.0"), "new regional map art styles must be present");
 assert.ok(fs.readFileSync(path.join(app,"src/runtime.js"),"utf8").includes("facility-interiors.svg#${fid}"), "facility entries must render a matching original indoor scene");
 assert.ok(runtimeSource.includes("xu-party-formation"), "character data must show the active party visually");
-assert.ok(runtimeSource.includes("equipment-display.svg"), "equipment view must have a dedicated illustration");
+assert.ok(!runtimeSource.includes("equipment-art-hero"), "equipment view must not render the old hero banner");
 assert.ok(fs.readFileSync(path.join(app,"src/event-portrait-ui.js"),"utf8").includes("event-scenes.svg#"), "story and event scenes must use original illustrations");
 assert.ok(battleTheme.includes("xuan-hit-fx"), "battle actions must show animated hit feedback");
 assert.ok(battleTheme.includes('document.getElementById("battleBack")'),"battle styling observes the bounded dynamic encounter surface");

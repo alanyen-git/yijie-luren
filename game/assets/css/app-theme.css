@@ -347,7 +347,6 @@ input,select{background:#081a38!important;color:#fff!important;border:1px solid 
 /* XUANYUAN-PARITY-80-ART-1.0 */
 .art-event-scene{position:relative;clear:both;width:100%;height:clamp(128px,30vw,228px);margin:10px 0 14px;overflow:hidden;border:1px solid #b98a46;border-radius:14px;background:#071016;box-shadow:inset 0 0 26px #000b,0 6px 18px #0008}.art-event-scene svg{width:100%;height:100%;display:block;object-fit:cover}.art-event-scene:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(transparent,#071016a8);pointer-events:none}
 .xu-party-formation{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px;margin:12px 0;padding:10px;border:1px solid #9d7944;border-radius:13px;background:linear-gradient(135deg,#0b1b22,#111b2a)}.xu-party-member{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:8px;min-height:92px;padding:6px;border:1px solid #46566a;border-radius:10px;background:#0c1219}.xu-party-member svg{width:42px;height:48px;object-fit:contain}.xu-party-member b{font-size:.82rem;color:#e5cf9e}.xu-party-member small{display:block;color:#9cabb9;font-size:.7rem}
-.equipment-art-hero{display:flex;align-items:center;gap:14px;min-height:112px;margin:8px 0 14px;padding:12px 16px;border:1px solid #b18d51;border-radius:14px;background:#0a141a url('../art/ui/equipment-display.svg') center/cover no-repeat;box-shadow:inset 0 0 36px #02080bd9}.equipment-art-hero svg{width:104px;height:88px;flex:0 0 auto}.equipment-art-hero b{color:#f0d9a6;font-size:1.05rem}.equipment-art-hero small{display:block;color:#bac3c7;margin-top:5px}
 .xuan-hit-fx{position:absolute;z-index:9;inset:0;display:grid;place-items:center;pointer-events:none;font-weight:900;font-size:clamp(22px,7vw,42px);text-shadow:0 2px 4px #000,0 0 12px #ffc45a;color:#ffe7a3;animation:xuan-hit-pop .72s ease-out both}.xuan-hit-fx[data-kind="heal"]{color:#8ff0b1;text-shadow:0 0 12px #29c964}.xuan-hit-fx[data-kind="magic"]{color:#a5dfff;text-shadow:0 0 14px #568eff}.xuan-hit-fx[data-kind="miss"]{color:#bec7d1;text-shadow:0 0 12px #71849a}.xuan-hit-fx[data-kind="critical"]{color:#ff9173;text-shadow:0 0 16px #f54d24}.battlelog>div{position:relative}@keyframes xuan-hit-pop{0%{opacity:0;transform:translateY(22px) scale(.45)}30%{opacity:1;transform:translateY(-7px) scale(1.13)}100%{opacity:0;transform:translateY(-28px) scale(.9)}}
 .modalbody .itemrow[data-art-tier="S"],.modalbody .itemrow[data-art-tier="A"]{border-color:#b28a46;box-shadow:inset 0 0 14px #bd994022}.modalbody .itemrow[data-art-tier="S"]{background:linear-gradient(110deg,#33281a,#101820 55%)}.modalbody .itemrow[data-art-tier="A"]{background:linear-gradient(110deg,#1d2833,#101820 55%)}
 
@@ -738,3 +737,23 @@ input,select{background:#081a38!important;color:#fff!important;border:1px solid 
 /* RUNTIME-STABILITY-1.0: reject queued action taps while the current turn commits. */
 body.runtime-action-busy #actionButtons button,
 body.runtime-action-busy .modalbody button{pointer-events:none}
+
+/* v1.129 道路視覺：城鎮地圖不顯示道路；其他地圖道路縮細並降低遮擋 */
+.town-map-canvas.is-town .xu-road-network,
+.town-map-canvas.is-town .town-map-roads,
+.xu-route-map-town .xu-road-network,
+.xu-town-board .xu-town-street,
+.xu-town-board .xu-town-center{display:none!important}
+.xu-road-network .xu-road-shadow{stroke-width:3px;stroke:#392b2088;vector-effect:non-scaling-stroke;filter:none}
+.xu-road-network .xu-road-center{stroke-width:1.4px;stroke:#e5d2a2b8;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+
+/* v1.129 屬性抗性：最多 4 欄、不斷行，依欄寬自動縮放；其他卡片文字依欄寬自適應 */
+.resist-card{container-type:inline-size}
+.resist-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 4px;margin-top:6px}
+.resist-item{display:flex;flex-direction:column;align-items:center;min-width:0;padding:5px 2px;border:1px solid #d5bd7a33;border-radius:8px;background:#081b2766;white-space:nowrap;font-size:12px}
+.resist-name{color:#bac3c7;font-size:12px}
+.resist-val{color:#f6e7bc;font-size:13px}
+@supports (font-size:1cqw){.resist-name{font-size:clamp(10px,3.4cqw,13px)}.resist-val{font-size:clamp(11px,3.8cqw,15px)}}
+.resist-poison{margin-top:8px}
+.modalbody .grid2>.card,.modalbody .grid3>.card,.modalbody .grid4>.card{min-width:0;overflow-wrap:anywhere}
+.modalbody .profile-value,.modalbody .resource-list-value{min-width:0;overflow-wrap:anywhere}
