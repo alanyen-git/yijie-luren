@@ -1,0 +1,14 @@
+{
+  "name": "異界旅人",
+  "repository": "alanyen-git/yijie-luren",
+  "independent": true,
+  "source_root": "game",
+  "web_entry": "app/",
+  "android_app_id": "com.alanyen.yijieluren",
+  "storage_prefix": "yijie_luren_",
+  "rules": [
+    "本專案程式、資料及素材獨立維護",
+    "僅由本儲存庫建置網頁與 APK",
+    "不得執行其他遊戲的資料匯入或同步"
+  ]
+}

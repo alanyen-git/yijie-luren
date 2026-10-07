@@ -1,0 +1,27 @@
+{
+  "id": "./",
+  "name": "異界旅人",
+  "short_name": "異界旅人",
+  "description": "異界旅人獨立手機角色扮演遊戲，可在本機存檔遊玩。",
+  "lang": "zh-Hant-TW",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#081633",
+  "theme_color": "#0d2a58",
+  "icons": [
+    {
+      "src": "assets/art/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/art/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
