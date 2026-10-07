@@ -3,8 +3,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 
-const source = fs.readFileSync(path.join(__dirname, "..", "qunlu-app", "src", "runtime.js"), "utf8");
-const encounterPatch = fs.readFileSync(path.join(__dirname, "..", "qunlu-app", "src", "gather-encounter-runtime.js"), "utf8");
+const source = fs.readFileSync(path.join(__dirname, "..", "game", "src", "runtime.js"), "utf8");
+const encounterPatch = fs.readFileSync(path.join(__dirname, "..", "game", "src", "gather-encounter-runtime.js"), "utf8");
 function extract(name) {
   const start = source.indexOf(`function ${name}(`);
   assert.notEqual(start, -1, `runtime should define ${name}`);
@@ -87,7 +87,7 @@ assert.equal(calls.encounterChecks, 11, "empty-resource attempts must still run 
 assert.equal(calls.battles, 1, "a valid encounter pool must force a battle by the twelfth consecutive harvest attempt");
 assert.equal(G.worldState.gatherEncounterPressure.actions, 0, "the persisted encounter streak should reset after the battle");
 assert.equal(calls.errors.length, 0, "twenty consecutive harvest attempts should not throw");
-const dataRoot = path.join(__dirname, "..", "qunlu-app", "src");
+const dataRoot = path.join(__dirname, "..", "game", "src");
 const dataContext = {};
 vm.createContext(dataContext);
 for (const file of ["game-data.js", "data-patches.js", "asdail-depth-v2.js", "political-region-pack-v1.js"]) {

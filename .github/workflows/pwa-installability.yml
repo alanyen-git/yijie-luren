@@ -14,8 +14,8 @@ jobs:
         with:
           node-version: 22
       - name: Validate App source
-        run: npm run test:qunlu-app
+        run: npm run test:game
       - name: Clean rebuild web game
         run: npm run prepare:web
       - name: Validate PWA bundle
-        run: npm run test:qunlu-bundle
+        run: npm run test:bundle

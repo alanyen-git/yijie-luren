@@ -1,13 +1,23 @@
 # 異界旅人
 
-目前 Android App 與網頁版使用同一套 `qunlu-app/` 原始碼與介面。
+獨立 RPG 專案，程式、資料、美術、存檔與發佈流程均由此儲存庫維護。
 
-## CURRENT-1.126.0
+- 正式儲存庫：https://github.com/alanyen-git/yijie-luren
+- 遊戲原始碼：`game/`
+- 網頁版：https://alanyen-git.github.io/yijie-luren/app/
+- APK：https://github.com/alanyen-git/yijie-luren/releases/tag/android-apk-latest
+- Android 識別碼：`com.alanyen.yijieluren`
+- 本機存檔、手動槽及診斷資料使用 `yijie_luren_` 名稱，與其他遊戲分開。舊版存檔可透過匯出／匯入移轉。
 
-- App 原始碼：`qunlu-app/`
-- 新網頁遊戲入口：`/app/`
-- 舊 `/game/`、`/play/`：不再部署
-- Web：直接完整複製 App 原始碼，不進行 UI 轉換
-- 頁首不含 NEW WEB / APP同步版
-- 進入遊戲後使用 App 的柳橋鎮 town-home：世界地圖、設定、當地地圖
-- 根網址只負責移除舊 Service Worker / Cache 後導向 `/app/`
+網頁與 Android 共用本專案 `game/` 原始碼。所有更新檢查只連到本儲存庫，不連動其他遊戲。
+
+## 驗證與建置
+
+```sh
+npm test
+npm run prepare:web
+npm run test:bundle
+npm run prepare:android
+```
+
+目前版本：CURRENT-1.128.0；沿用 1.127.0 已驗證的精緻三頭身立繪及四項橫向戰鬥指令。版本分離前的 Git 紀錄僅供歷史追溯。

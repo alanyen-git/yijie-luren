@@ -1,31 +1,55 @@
-const { setTimeout: delay } = require("node:timers/promises");
-const expectedVersion = require("../package.json").version;
-const expectedSha = process.env.GITHUB_SHA;
-const base = process.env.PAGES_URL;
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 
-async function main() {
-  if (!expectedSha || !/^[a-f0-9]{40}$/.test(expectedSha)) throw new Error("缺少部署提交 SHA");
-  if (!base || new URL(base).href !== "https://alanyen-git.github.io/dalu-game-web/") throw new Error("Pages URL 與專案不符");
-  for (let attempt = 1; attempt <= 12; attempt++) {
-    try {
-      const read = async file => {
-        const response = await fetch(new URL(file + "?verify=" + expectedSha + "-" + attempt, base), { cache: "no-store", signal: AbortSignal.timeout(15000) });
-        if (!response.ok) throw new Error(file + ": HTTP " + response.status);
-        return response;
-      };
-      const [version, build, html] = await Promise.all([
-        read("version.json").then(r => r.json()),
-        read("build-info.json").then(r => r.json()),
-        read("index.html").then(r => r.text())
-      ]);
-      if (version.version !== expectedVersion || version.slug !== "dalu-game-web" || build.version !== expectedVersion || build.source_commit !== expectedSha || !html.includes("app.js?v=" + expectedVersion)) throw new Error("公開內容尚未與部署提交一致");
-      console.log("Pages verified: " + expectedVersion + " @ " + expectedSha);
-      return;
-    } catch (error) {
-      if (attempt === 12) throw error;
-      console.log("等待 Pages 更新 (" + attempt + "/12): " + error.message);
-      await delay(10000);
-    }
-  }
+const root=path.resolve(__dirname,"..");
+const localVersion=JSON.parse(fs.readFileSync(path.join(root,"www","app","version.json"),"utf8"));
+const build=JSON.parse(fs.readFileSync(path.join(root,"www","web-build.json"),"utf8"));
+assert.equal(build.entry,"app/");
+assert.equal(build.exact_app_mirror,true);
+assert.equal(build.ui_transform,false);
+
+const base=process.env.PAGES_URL;
+if(!base){console.log("Local only: "+localVersion.version);process.exit(0)}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function getText(url){
+ const r=await fetch(url,{cache:"no-store",headers:{"Cache-Control":"no-cache"}});
+ if(!r.ok)throw new Error(url+" HTTP "+r.status);
+ return r.text();
 }
-main().catch(error => { console.error(error); process.exitCode = 1; });
+async function getJson(url){return JSON.parse(await getText(url))}
+(async()=>{
+ let last;
+ for(let attempt=1;attempt<=20;attempt++){
+  try{
+   const q="?verify="+Date.now()+"-"+attempt;
+   const rv=await getJson(new URL("version.json"+q,base));
+   const av=await getJson(new URL("app/version.json"+q,base));
+   const rootHtml=await getText(new URL(q,base));
+   const appHtml=await getText(new URL("app/"+q,base));
+   const townHome=await getText(new URL("app/src/town-home-ui.js"+q,base));
+   const runtime=await getText(new URL("app/src/runtime.js"+q,base));
+   const game=await fetch(new URL("game/"+q,base),{cache:"no-store"});
+   const play=await fetch(new URL("play/"+q,base),{cache:"no-store"});
+   assert.equal(rv.version,localVersion.version);
+   assert.equal(rv.web_entry,"app/");
+   assert.equal(av.version,localVersion.version);
+   assert.ok(rootHtml.includes("./app/"));
+   assert.ok(!appHtml.includes("NEW WEB"));
+   assert.ok(!appHtml.includes("web-build-badge"));
+   assert.ok(!appHtml.includes("WEB 2.0"));
+   assert.ok(!appHtml.includes("冒險指揮台"));
+   assert.ok(townHome.includes("異界旅人・旅途據點"));
+   assert.ok(townHome.includes("世界地圖"));
+   assert.ok(townHome.includes("設定"));
+   assert.ok(townHome.includes("當地地圖"));
+   assert.ok(townHome.includes("ensureTownHome"));
+   assert.ok(runtime.includes('if(typeof window.renderTownHome==="function")window.renderTownHome()'));
+   assert.equal(game.status,404);
+   assert.equal(play.status,404);
+   console.log("Verified public fresh App mirror: "+new URL("app/",base)+" version="+localVersion.version);
+   return;
+  }catch(e){last=e;console.log("Pages not fresh, attempt "+attempt+": "+e.message);await sleep(3000)}
+ }
+ throw last;
+})().catch(e=>{console.error(e);process.exit(1)});

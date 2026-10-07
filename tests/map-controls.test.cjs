@@ -2,7 +2,7 @@ const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
 const vm=require("node:vm");
-const source=fs.readFileSync(path.join(__dirname,"..","qunlu-app","src","map-controls.js"),"utf8");
+const source=fs.readFileSync(path.join(__dirname,"..","game","src","map-controls.js"),"utf8");
 const events={},MAPS=".xu-board,.xu-town-board,.town-map-canvas",mapTarget={style:{}},homeTarget={style:{}};
 function makeStage(width,height,selector,target){
  const stage={clientWidth:width,clientHeight:height,children:[],captured:[],style:{vars:{},setProperty(k,v){this.vars[k]=v}},classList:{add(){},remove(){}},querySelector(sel){if(sel===":scope > .map-zoom-controls")return this.children.find(x=>x.className==="map-zoom-controls")||null;if(sel===selector)return target;return null},appendChild(el){this.children.push(el);el.parent=this},setPointerCapture(id){this.captured.push(id)},closest(sel){return sel===MAPS?this:null}};

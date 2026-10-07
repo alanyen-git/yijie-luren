@@ -4,12 +4,12 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const root = path.join(__dirname, "..");
-const stabilitySource = fs.readFileSync(path.join(root, "qunlu-app/src/runtime-stability.js"), "utf8");
-const runtimeSource = fs.readFileSync(path.join(root, "qunlu-app/src/runtime.js"), "utf8");
-const worldSource = fs.readFileSync(path.join(root, "qunlu-app/src/world-autonomy-v2.js"), "utf8");
-const battleUiSource = fs.readFileSync(path.join(root, "qunlu-app/src/battle-ui-theme.js"), "utf8");
-const inventoryUiSource = fs.readFileSync(path.join(root, "qunlu-app/src/inventory-art-ui.js"), "utf8");
-const eventUiSource = fs.readFileSync(path.join(root, "qunlu-app/src/event-portrait-ui.js"), "utf8");
+const stabilitySource = fs.readFileSync(path.join(root, "game/src/runtime-stability.js"), "utf8");
+const runtimeSource = fs.readFileSync(path.join(root, "game/src/runtime.js"), "utf8");
+const worldSource = fs.readFileSync(path.join(root, "game/src/world-autonomy-v2.js"), "utf8");
+const battleUiSource = fs.readFileSync(path.join(root, "game/src/battle-ui-theme.js"), "utf8");
+const inventoryUiSource = fs.readFileSync(path.join(root, "game/src/inventory-art-ui.js"), "utf8");
+const eventUiSource = fs.readFileSync(path.join(root, "game/src/event-portrait-ui.js"), "utf8");
 
 const storage = new Map();
 const timers = [];

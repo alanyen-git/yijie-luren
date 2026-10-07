@@ -2,7 +2,7 @@ const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
 const vm=require("node:vm");
-const source=fs.readFileSync(path.join(__dirname,"../qunlu-app/src/npc-speaker.js"),"utf8");
+const source=fs.readFileSync(path.join(__dirname,"../game/src/npc-speaker.js"),"utf8");
 const archetypes=[
  {id:"NPC-ARCH-18-02",region_id:"REG-18",facility_affinity:"general",culture_id:"CUL-018",role:"行商與工匠中介",social_layer:"市鎮商旅",knowledge_scope:["商品","道路"],quest_domains:["交易","委託"]},
  {id:"NPC-ARCH-18-06",region_id:"REG-18",facility_affinity:"general",culture_id:"CUL-018",role:"農牧、礦工、船工或普通居民"}

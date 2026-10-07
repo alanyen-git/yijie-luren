@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.join(__dirname, "..");
-const runtimeSource = fs.readFileSync(path.join(root, "qunlu-app/src/runtime.js"), "utf8");
+const runtimeSource = fs.readFileSync(path.join(root, "game/src/runtime.js"), "utf8");
 const retentionLimit = Number(runtimeSource.match(/HISTORY_RETENTION_LIMIT=(\d+)/)?.[1]);
 const displayLimit = Number(runtimeSource.match(/HISTORY_DISPLAY_LIMIT=(\d+)/)?.[1]);
 assert.ok(retentionLimit > 0, "history retention must have a positive cap");

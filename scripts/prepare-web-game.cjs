@@ -2,7 +2,7 @@ const fs = require("node:fs/promises");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
-const source = path.join(root, "qunlu-app");
+const source = path.join(root, "game");
 const web = path.join(root, "www");
 const app = path.join(web, "app");
 
@@ -33,19 +33,7 @@ async function main() {
 <style>html,body{height:100%;margin:0;background:#071014;color:#f4e6bd;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif}body{display:grid;place-items:center;text-align:center}.box{padding:28px}.v{margin-top:10px;color:#d7bd72;font-weight:800}</style>
 </head><body><div class="box"><h1>異界旅人</h1><div>正在切換至最新 App 同步版…</div><div class="v">${version.version}</div></div>
 <script>
-(async()=>{
-  try{
-    if("serviceWorker" in navigator){
-      const regs=await navigator.serviceWorker.getRegistrations();
-      await Promise.all(regs.map(r=>r.unregister()));
-    }
-    if("caches" in window){
-      const keys=await caches.keys();
-      await Promise.all(keys.map(k=>caches.delete(k)));
-    }
-  }catch(e){}
-  location.replace("./app/?build="+encodeURIComponent("${version.version}")+"&t="+Date.now());
-})();
+location.replace("./app/?build="+encodeURIComponent("${version.version}"));
 </script></body></html>`;
 
   await fs.writeFile(path.join(web, "index.html"), rootRedirect);
@@ -60,7 +48,7 @@ async function main() {
   await fs.writeFile(path.join(web, "web-build.json"), JSON.stringify({
     game:"異界旅人",
     version:version.version,
-    source:"qunlu-app",
+    source:"game",
     entry:"app/",
     exact_app_mirror:true,
     ui_transform:false,

@@ -2,7 +2,7 @@ const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
 const vm=require("node:vm");
-const source=fs.readFileSync(path.join(__dirname,"../qunlu-app/src/equipment-detail-ui.js"),"utf8");
+const source=fs.readFileSync(path.join(__dirname,"../game/src/equipment-detail-ui.js"),"utf8");
 const rendered=[];
 const body={querySelector:selector=>selector===".equipment-art-hero"?{insertAdjacentHTML:(where,html)=>rendered.push({where,html})}:selector===".xu-gear-detail"?null:null};
 const sandbox={G:{character:{equipment:{"主武器":{id:"EQ-A",durability:25,maxDurability:100},"盔甲":null},weaponSet:{offhand:{id:"EQ-B",durability:0,maxDurability:50}}}},window:{},document:{querySelector:selector=>selector==="#modalTitle"?{textContent:"裝備"}:selector==="#modalBody"?body:null},item:id=>id==="EQ-A"?{name:"星鐵劍<試作>",tier:"C",durability:100,type:"主武器"}:{name:"木盾",tier:"F",durability:50,type:"盾牌"},equipmentCombat:()=>({attack:3,defense:0,critRate:2}),advancedEquipment:()=>({range:1,carryCapacity:0}),openEquipment:()=>{sandbox.called=true}};
