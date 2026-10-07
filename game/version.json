@@ -1,11 +1,12 @@
 {
-  "version": "CURRENT-1.130.0",
-  "previous_version": "CURRENT-1.129.0",
+  "version": "CURRENT-1.130.1",
+  "previous_version": "CURRENT-1.130.0",
   "channel": "web",
   "distribution_mode": "static_web",
   "entrypoint": "index.html",
   "summary": "異界旅人獨立專案：更新來源、App 識別碼、本機存檔與發佈設定分離。",
   "changelog": [
+    "1.130.1：還原遺失的 App 圖示（離線快取與 PWA 安裝需要）、修正 Pages 部署驗證腳本、玩家名稱統一清理特殊字元以避免被當成 HTML 解析。",
     "1.130.0：城鎮首頁取消重複的世界地圖與設定按鍵、回合欄位與當地情報；遊戲時間與位置各占一整行；旅人狀態移到當地地圖下方、可用行動上方。",
     "1.129.0：城鎮地圖不再顯示道路、其他地圖道路改細；旅人狀態移除重複的黃框並將銀幣移到負重下方；屬性抗性最多四欄且不斷行；修正各職業擅長武器與起始武器（刺客改匕首／短劍、法師與神職改法杖、東方劍客改武士刀）；背包分類標籤可點擊跳轉；裝備介面移除損壞的頂部橫幅。",
     "1.128.0：改用獨立 GitHub 儲存庫、game/ 原始碼、獨立更新與存檔名稱。",
@@ -33,7 +34,7 @@
   "save_compatible": true,
   "map_ui_revision": "XUANYUAN-MAP-UI-1.21",
   "battle_ui_revision": "BATTLE-REFERENCE-3.0",
-  "pwa_cache_revision": "v81",
+  "pwa_cache_revision": "v82",
   "home_ui_revision": "TOWN-MAP-HOME-1.6",
   "scene_art_revision": "ORIGINAL-MAP-SCENES-3.0",
   "dungeon_index_revision": "DUNGEON-INDEX-1.0",
