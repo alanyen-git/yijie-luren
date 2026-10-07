@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>大陸旅誌應用程式圖示</title>
+  <rect width="512" height="512" rx="112" fill="#102c36"/>
+  <circle cx="256" cy="256" r="184" fill="none" stroke="#d6a35d" stroke-width="8"/>
+  <circle cx="256" cy="256" r="146" fill="none" stroke="#f0d6a8" stroke-opacity=".6" stroke-width="4"/>
+  <g stroke="#d6a35d" stroke-width="8" stroke-linecap="round">
+    <path d="M256 80v38M256 394v38M80 256h38M394 256h38M132 132l27 27M353 353l27 27M380 132l-27 27M159 353l-27 27"/>
+  </g>
+  <path d="m256 142 34 96 96 34-96 28-34 96-28-96-96-28 96-34z" fill="#f0d6a8"/>
+  <path d="M144 310c38-28 75-28 112 0s74 28 112 0M176 342c27-19 53-19 80 0s53 19 80 0" fill="none" stroke="#75adb0" stroke-width="12" stroke-linecap="round"/>
+</svg>

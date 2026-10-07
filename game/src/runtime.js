@@ -1,5 +1,5 @@
 
-const CURRENT_VERSION="CURRENT-1.130.0";
+const CURRENT_VERSION="CURRENT-1.130.1";
 const AUDIT_INTERVAL_TURNS=20;
 const HISTORY_RETENTION_LIMIT=500,HISTORY_DISPLAY_LIMIT=80;
 DB.meta.current_version=CURRENT_VERSION;
@@ -88,6 +88,7 @@ function makeEquip(id,dur=null){const d=item(id);return {id,durability:dur??d.du
 function init(){let raw=null;try{raw=window.localStorage?localStorage.getItem("yijie_luren_save"):null}catch(e){}if(raw){try{G=JSON.parse(raw);migrateSave();enterGame(true)}catch(e){console.warn(e)}}}
 function migrateSave(){
  if(G)G.history=retainRecentHistory(G.history);
+ if(G&&G.character)G.character.name=sanitizePlayerName(G.character.name);
  const legacyOriginMap=DB.origin_system?.legacy_origin_map||{};
  const legacyRaceSubtypeMap={"獅":"獅人","虎":"虎人","狼":"狼人","狐":"狐人","貓":"貓人","牛":"獅人"};
  if(G?.character?.raceId==="R-ORC"&&legacyRaceSubtypeMap[G.character.raceSubtype])G.character.raceSubtype=legacyRaceSubtypeMap[G.character.raceSubtype];
@@ -308,6 +309,10 @@ function rollClass(){
  $("#classResult").innerHTML=`${c.name} <span class="tier">${c.tier}</span>${c.sealed?"（高階能力封印）":""}`;
  $("#randomCount").textContent=`隨機剩餘 ${creation.randomLeft} 次`
 ;refreshTalentPreview()}
+function sanitizePlayerName(value){
+ const clean=String(value==null?"":value).replace(/[<>&"'`\u0000-\u001f]/g,"").replace(/\s+/g," ").trim().slice(0,24);
+ return clean||"旅人";
+}
 function createCharacter(){
  if(!creation.race||!creation.origin||!creation.element||!creation.classId){alert("請先完成種族、出身與職業。");return}
  const r=by(DB.races,creation.race),o=org(creation.origin),cc=cls(creation.classId),id=nowId("CHAR");
@@ -317,7 +322,7 @@ function createCharacter(){
  for(const iid of originItems){const found=inv.find(x=>x.id===iid);if(found)found.qty++;else inv.push({id:iid,qty:1,acquiredHour:8})}
  const startH=o.survival_start||{};
  G={meta:{version:CURRENT_VERSION,characterId:id,saveIndex:[]},turn:0,worldTime:{year:317,season:"初春",day:1,hour:8,minute:0},worldState:{weather:"晴朗",eventClock:0,politicalRelations:{},politicalEvents:[],authorityEvents:[],disciplineEvents:[],orgRelations:{},orgEvents:[],sTierEvents:[],integratedEvents:[],orchestrator:{lastWorldDynamicTurn:-1}},
- character:{id,name:($("#nameInput").value||"旅人").trim(),raceId:r.id,raceSubtype:creation.raceSubtype,originId:o.id,originFlags:[...(o.flags||[])],originKnowledge:[...(o.knowledge||[])],element:creation.element,classId:cc.id,level:1,xp:0,abilityPoints:0,spentAbilityPoints:0,abilityPointEntitlement:0,adventureRank:"F",combatGrade:"F",classSealed:!!cc.sealed,classGate:cc.gate||null,classMastery:0,classHistory:[],unlockedClassRoutes:[],
+ character:{id,name:sanitizePlayerName($("#nameInput").value),raceId:r.id,raceSubtype:creation.raceSubtype,originId:o.id,originFlags:[...(o.flags||[])],originKnowledge:[...(o.knowledge||[])],element:creation.element,classId:cc.id,level:1,xp:0,abilityPoints:0,spentAbilityPoints:0,abilityPointEntitlement:0,adventureRank:"F",combatGrade:"F",classSealed:!!cc.sealed,classGate:cc.gate||null,classMastery:0,classHistory:[],unlockedClassRoutes:[],
  subjobs:(o.starter_subjobs||[]).slice(0,1).map(sid=>({id:sid,grade:"F",xp:0,source:"出身"})),stats:{力量:10,敏捷:10,智力:10,意志:10,體力:10,魅力:10,幸運:10},hp:28,maxHp:28,stamina:22,maxStamina:22,mana:24,maxMana:24,toxicity:0,statusEffects:[],hunger:startH.hunger??10,fatigue:startH.fatigue??5,thirst:startH.thirst??10,weightCap:28+(r.weight_mod||0)+(o.weight_mod||0),moneySilver:o.silver||30,guildReputation:0,guildRestrictionUntilTurn:0,politicalStanding:{},disciplines:{discovered:[],mastery:{},reputation:{},membershipId:null},organizations:{membershipId:null,memberships:[],formerMemberships:[],reputation:{},discovered:[]},locationId:"L-WILLOW",currentFacility:null,alive:true,revival:{base:3,bonus:0,max:3,used:0,remaining:3},buffs:[],
  skills:chosen.map(s=>({...s,type:"戰鬥",mastery:6,skillXp:Math.round(skillXpThresholds()[1]*.55*100)/100})),companions:[],activeCompanionId:null,adventureParty:null,equipment:{主武器:makeEquip(cc.starter_weapon_id||cc.weapon),頭盔:makeEquip("EQ-HELM"),盔甲:makeEquip("EQ-CLOTH"),手套:makeEquip("EQ-GLOVE"),鞋子:makeEquip("EQ-SHOE"),披風:makeEquip("EQ-CLOAK"),飾品1:null,飾品2:null},
  inventory:inv,weaponSet:{offhand:cc.starter_offhand_id?makeEquip(cc.starter_offhand_id):null},knownRecipes:[],knownLoreIds:starterLoreForCharacter(r.id,cc.id),conditions:[],trainingToday:{day:1,combat:0,survival:0,body:0}},history:[],dialogueMemory:[],knownIntel:[],explorationIntel:[],intelBoardCache:{},questBoard:[],quests:[],questHistory:[],battle:null};

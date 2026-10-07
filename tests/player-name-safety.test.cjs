@@ -1,0 +1,16 @@
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const path=require("node:path");
+const runtime=fs.readFileSync(path.join(__dirname,"..","game","src","runtime.js"),"utf8");
+const m=runtime.match(/function sanitizePlayerName\(value\)\{[\s\S]*?\n\}/);
+assert.ok(m,"sanitizePlayerName must exist in runtime.js");
+const sanitize=new Function(m[0]+";return sanitizePlayerName")();
+assert.equal(sanitize("<img src=x onerror=a()>"),"img src=x onerror=a()");
+assert.equal(sanitize('<i id="a">X</i>'),"i id=aX/i");
+assert.ok(!/[<>&"'`]/.test(sanitize('a<b>&"c\'d`e')));
+assert.equal(sanitize("   "),"旅人");
+assert.equal(sanitize(null),"旅人");
+assert.equal(sanitize("王".repeat(60)).length,24);
+assert.ok(runtime.includes("sanitizePlayerName($(\"#nameInput\").value)"),"createCharacter must sanitize the typed name");
+assert.ok(/function migrateSave\(\)\{[\s\S]{0,160}G\.character\.name=sanitizePlayerName\(G\.character\.name\)/.test(runtime),"loaded saves must be sanitized");
+console.log("PASS player name is sanitized on creation and on every save load.");
