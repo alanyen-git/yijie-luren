@@ -3,6 +3,8 @@ name: 異界旅人 Android Debug APK
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -32,7 +34,9 @@ jobs:
           npm install --no-save --no-audit --no-fund playwright
           npx playwright install --with-deps chromium
       - name: Verify battle portraits and mobile commands
-        run: node tests/battle-reference-ui.browser.cjs
+        run: |
+          node tests/battle-reference-ui.browser.cjs
+          node tests/mobile-layout.browser.cjs
       - name: Upload battle verification screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -60,6 +64,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Publish direct APK download
+        if: github.event_name != 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
