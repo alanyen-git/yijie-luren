@@ -38,7 +38,7 @@ function renderProfile(){
  if(typeof G==="undefined"||!G.character)return;
  const c=G.character,cl=typeof cls==="function"?cls(c.classId):null;
  $("#townHomePosition").textContent=(typeof timeText==="function"?timeText():"")+"｜T"+G.turn;
- $("#townHomeProfile").innerHTML='<div class="town-profile-name"><b>'+esc(c.name)+'</b><span>'+esc(cl&&cl.name||"旅人")+'</span></div><div class="town-profile-meta">Lv '+esc(c.level)+'｜冒險階級 '+esc(c.adventureRank||"F")+'｜'+esc(c.raceId||"種族")+'</div><div class="town-profile-bars"><div><span>HP</span><b>'+Math.round(c.hp)+' / '+c.maxHp+'</b><i><em style="width:'+Math.max(0,Math.min(100,100*c.hp/(c.maxHp||1)))+'%"></em></i></div><div><span>SP</span><b>'+Math.round(c.stamina)+' / '+c.maxStamina+'</b><i><em class="sp" style="width:'+Math.max(0,Math.min(100,100*c.stamina/(c.maxStamina||1)))+'%"></em></i></div><div><span>MP</span><b>'+Math.round(c.mana)+' / '+c.maxMana+'</b><i><em class="mp" style="width:'+Math.max(0,Math.min(100,100*c.mana/(c.maxMana||1)))+'%"></em></i></div></div><div class="town-profile-resources"><span>銀幣 <b>'+Number(c.moneySilver||0)+'</b></span><span>飢餓 <b>'+Math.round(c.hunger||0)+'%</b></span><span>疲勞 <b>'+Math.round(c.fatigue||0)+'%</b></span><span>口渴 <b>'+Math.round(c.thirst||0)+'%</b></span></div>';
+ $("#townHomeProfile").innerHTML='<div class="town-profile-name"><b>'+esc(c.name)+'</b><span>'+esc(cl&&cl.name||"旅人")+'</span></div><div class="town-profile-meta">Lv '+esc(c.level)+'｜冒險階級 '+esc(c.adventureRank||"F")+'｜'+esc(c.raceId||"種族")+'</div>';
 }
 function renderTownHome(){
  if(typeof G==="undefined"||!G.character)return;

@@ -1,5 +1,5 @@
 
-const CURRENT_VERSION="CURRENT-1.128.0";
+const CURRENT_VERSION="CURRENT-1.129.0";
 const AUDIT_INTERVAL_TURNS=20;
 const HISTORY_RETENTION_LIMIT=500,HISTORY_DISPLAY_LIMIT=80;
 DB.meta.current_version=CURRENT_VERSION;
@@ -723,7 +723,8 @@ function renderAll(){
    ${resourceCard("thirst","口渴",`${Math.round(c.thirst)}%`,100,c.thirst)}
  </div>
  ${c.conditions.length?`<div class="condition-strip">${c.conditions.join("｜")}</div>`:""}
- <div class="hud-foot"><span>先攻 ${cs.initiative}｜移速 ${cs.moveSpeed}</span><span>負重 ${weight}/${cs.carryCapacity}kg</span></div>`);
+ <div class="hud-foot"><span>先攻 ${cs.initiative}｜移速 ${cs.moveSpeed}</span><span>負重 ${weight}/${cs.carryCapacity}kg</span></div>
+ <div class="hud-silver">銀幣 <b>${Number(c.moneySilver||0)}</b></div>`);
  renderActions();renderHistoryLog();if(G.battle?.active)renderBattle(cs);else{$("#battleBack")?.classList.add("hide");closeBattleSkillPopup();syncBodyScrollLock()}
 }
 
@@ -4310,7 +4311,7 @@ function openCharacter(){
  const attrs=[["STR 力量","力量"],["DEX 敏捷","敏捷"],["CON 體質","體力"],["INT 智力","智力"],["WIS 精神","意志"],["CHA 魅力","魅力"],["LUK 幸運","幸運"]].map(([label,key])=>`<div class="card"><b>${label}</b><br>${c.stats[key]}${effectiveStat(key)!==c.stats[key]?` → ${effectiveStat(key)}`:""}${c.abilityPoints>0?` <button class="stat-up good" onclick="spendAbilityPoint('${key}')">＋1</button>`:""}</div>`).join("");
  const core=`<div class="grid3"><div class="card"><b>物理攻擊</b><br>${cs.attack}</div><div class="card"><b>魔法攻擊</b><br>${cs.magicPower}</div><div class="card"><b>物理防禦</b><br>${cs.defense}</div><div class="card"><b>魔法防禦</b><br>${cs.magicDefense}</div><div class="card"><b>命中率</b><br>${cs.accuracy}%</div><div class="card"><b>閃避率</b><br>${cs.evasion}%</div><div class="card"><b>爆擊率</b><br>${cs.critRate}%</div><div class="card"><b>爆擊傷害</b><br>${cs.critDamage}%</div><div class="card"><b>速度／先攻</b><br>${cs.initiative}</div></div>`;
  const advanced=`<div class="grid3"><div class="card"><b>移動速度</b><br>${cs.moveSpeed}</div><div class="card"><b>攻擊速度</b><br>${cs.attackSpeed.toFixed(2)}×</div><div class="card"><b>詠唱速度</b><br>${cs.castSpeed.toFixed(2)}×</div><div class="card"><b>射程</b><br>${cs.range}m</div><div class="card"><b>破甲／魔穿</b><br>${cs.armorPenPct}% / ${cs.magicPenPct}%</div><div class="card"><b>格擋</b><br>${cs.blockRate}% / 減傷${cs.blockValue}%</div><div class="card"><b>韌性</b><br>${cs.poise}</div><div class="card"><b>異常命中</b><br>${cs.statusAccuracy}%</div><div class="card"><b>異常抗性</b><br>${cs.statusResist}%</div><div class="card"><b>生命偷取</b><br>${cs.lifeSteal}%</div><div class="card"><b>治療效果</b><br>${cs.healingPower}%</div><div class="card"><b>MP回復</b><br>${cs.manaRegen}/時</div><div class="card"><b>HP回復</b><br>${cs.hpRegen}/時</div><div class="card"><b>爆擊抗性</b><br>${cs.critResist}%</div><div class="card"><b>威脅值</b><br>${cs.threat}</div><div class="card"><b>潛行</b><br>${cs.stealth}</div><div class="card"><b>感知</b><br>${cs.perception}</div><div class="card"><b>負重上限</b><br>${cs.carryCapacity}kg</div></div>`;
- const resist=`<div class="card small"><b>屬性抗性</b><br>${Object.entries(eres).map(([k,v])=>`${k}${v>=0?"+":""}${Math.round(v)}%`).join("　")}<br>毒素抗性：${Math.round(poisonResistance())}%</div>`;
+ const resist=`<div class="card small resist-card"><b>屬性抗性</b><div class="resist-grid">${Object.entries(eres).map(([k,v])=>`<span class="resist-item"><span class="resist-name">${k}</span><b class="resist-val">${v>=0?"+":""}${Math.round(v)}%</b></span>`).join("")}</div><div class="resist-poison">毒素抗性：${Math.round(poisonResistance())}%</div></div>`;
  showModal("角色",`
  <div class="profile-card">
    <div class="profile-name">${c.name}</div>
@@ -4345,8 +4346,7 @@ function openCharacter(){
 }
 function forgetSkill(i){if(G.character.skills.length<=2){alert("至少保留2個技能。");return}if(confirm(`確定遺忘${G.character.skills[i].name}？`)){G.character.skills.splice(i,1);persist();openCharacter()}}
 function openEquipment(){
- const worn=Object.values(G.character.equipment||{}).filter(Boolean).length+(offhandEquip()?1:0);const banner=`<div class="equipment-art-hero"><img src="./assets/art/ui/equipment-display.svg" alt="裝備展示圖"><div><b>行旅裝束</b><span>${worn} / 9 裝備部位已使用</span><span>裝備耐久、數值與副手皆沿用現有欄位</span></div></div>`;
- let b=banner+Object.entries(G.character.equipment).map(([slot,eq])=>{
+ let b=Object.entries(G.character.equipment).map(([slot,eq])=>{
    if(!eq)return `<div class="itemrow"><span>${slot}</span><b>—</b></div>`;
    const d=item(eq.id);return `<div class="itemrow"><span><b>${slot}</b>：${d.name} <span class="tier">${d.tier}</span><br><span class="small">${itemStatsText(d)}｜耐久${eq.durability}/${eq.maxDurability}</span></span><button onclick="unequip('${slot}')">卸下</button></div>`
  }).join("");
@@ -4407,6 +4407,12 @@ function inventorySummary(){
  const weight=calcWeight(),cap=combatStats().carryCapacity,pct=cap?Math.round(weight/cap*100):0;
  return {groups:[...groups.entries()].sort((a,b)=>a[1].order-b[1].order),stacks:inv.length,qty,weight,cap,pct}
 }
+function jumpInventoryCategory(name){
+ const body=document.querySelector("#modalBody");if(!body)return;
+ const target=[...body.querySelectorAll(".inventory-category-title")].find(el=>el.dataset.inventoryCat===String(name));
+ if(!target)return;
+ try{target.scrollIntoView({block:"start",behavior:"smooth"})}catch(e){target.scrollIntoView(true)}
+}
 function organizeInventory(){
  const inv=G.character.inventory;
  inv.sort(inventorySortCompare);
@@ -4417,7 +4423,7 @@ function openInventory(){
  const view=list.map((x,i)=>({x,i})).sort((a,b)=>inventorySortCompare(a.x,b.x));
  const rows=view.map(({x,i})=>{
    const d=item(x.id),cat=inventoryCategory(d),isEq=d&&["主武器","頭盔","盔甲","手套","鞋子","披風","飾品"].includes(d.type),usable=!!d.use||!!d.buff||!!d.utility_effect||!!d.battle_effect||d.type==="料理";
-   const head=cat.key!==lastCat?(lastCat=cat.key,`<div class="inventory-category-title">${cat.key}</div>`):"";
+   const head=cat.key!==lastCat?(lastCat=cat.key,`<div class="inventory-category-title" data-inventory-cat="${cat.key}">${cat.key}</div>`):"";
    let equipButtons="";
    if(isEq){
      const g=canEquipItem(d);
@@ -4437,7 +4443,7 @@ function openInventory(){
      <div class="inventory-item-actions ${actionCount===1?"one":""}">${actions}</div>
    </div>`
  }).join("")||"<div class='small'>背包為空。</div>";
- const chips=summary.groups.map(([name,v])=>`<span class="inventory-chip">${name} ${v.qty}</span>`).join("");
+ const chips=summary.groups.map(([name,v])=>`<button type="button" class="inventory-chip" onclick="jumpInventoryCategory('${name}')" aria-label="跳到${name}分類">${name} ${v.qty}</button>`).join("");
  const loadClass=summary.pct>=100?"danger":summary.pct>=85?"warnText":"ok";
  showModal("背包",`<div class="inventory-summary"><div class="inventory-summary-top"><span>物品 ${summary.qty} 件｜堆疊 ${summary.stacks}</span><span class="${loadClass}">負重 ${summary.weight}/${summary.cap}kg（${summary.pct}%）</span></div><div class="inventory-chiprow">${chips}</div></div><div class="inventory-sortbar"><button class="good" onclick="organizeInventory()">一鍵整理</button><span class="small">目前已依分類顯示；整理會固定此排序。</span></div>${rows}`,"openInventory()")
 }
