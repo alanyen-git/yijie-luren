@@ -1,0 +1,115 @@
+/* 異界旅人 1.91：潮痕金紋・視覺統整 */
+:root{--polish-jade:#70d0c2;--polish-gold:#f2d58d;--polish-ink:#071324;--polish-line:#aac9df}
+body:before{opacity:.11;background-image:radial-gradient(circle at 1px 1px,#e9d7a233 1px,transparent 1.4px),linear-gradient(135deg,#fff1 1px,transparent 1px);background-size:26px 26px,18px 18px}
+.top{border-bottom-color:#9ec7d66b}
+.top:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,transparent,#8fceb966 24%,#e5c77b 50%,#8fceb966 76%,transparent);pointer-events:none}
+.title{letter-spacing:.12em}
+.panel,.town-home-character,.town-home-note,.town-home-journal{position:relative}
+.panel:before{content:"";position:absolute;inset:5px;border:1px solid #c5b16d1c;border-radius:inherit;pointer-events:none}
+.section-title{padding-bottom:7px;border-bottom:1px solid #a9c3bd25}
+.section-title h3{letter-spacing:.08em}
+.town-home-header{isolation:isolate;overflow:hidden}
+.town-home-header:after{content:"";position:absolute;inset:0;z-index:-1;opacity:.34;background:radial-gradient(ellipse at 92% 8%,#82d6cf55,transparent 29%),linear-gradient(110deg,transparent 58%,#f0d18c12 58.2%,transparent 59%)}
+.town-home-header h1{font-weight:800}
+.town-home-kicker{display:inline-flex;align-items:center;gap:7px}
+.town-home-kicker:before{content:"";width:19px;height:1px;background:var(--polish-jade);box-shadow:0 0 8px #70d0c2aa}
+.town-home-layout{gap:14px}
+.town-map-canvas{border-color:#ead59a;box-shadow:inset 0 0 0 4px #142a3388,inset 0 0 36px #04131b88,0 14px 30px #02081799}
+.town-map-canvas:after{content:"";position:absolute;inset:9px;z-index:1;border:1px solid #f0d99955;border-radius:5px;pointer-events:none}
+.town-map-building,.town-route-pin,.town-current-site{filter:drop-shadow(0 3px 4px #08132188)}
+.town-map-building{transition:transform .18s ease,filter .18s ease}
+.town-map-building:hover{transform:translateY(-3px);filter:drop-shadow(0 6px 8px #081321aa)}
+.town-home-character,.town-home-note,.town-home-journal{border-color:#8db3c65c;box-shadow:inset 0 1px #fff2,0 8px 22px #02081755}
+.town-profile-name b{color:#fff0c8;letter-spacing:.06em}
+.town-profile-bars>div i{height:7px;box-shadow:0 0 10px #70d0c255}
+.town-home-actions{border:1px solid #8fb7c43c;border-radius:12px;padding:11px;background:linear-gradient(145deg,#0b1c31a8,#10234188)}
+.action-grid button,.town-home-actions button{transition:transform .16s ease,border-color .16s ease,filter .16s ease}
+.action-grid button:hover,.town-home-actions button:hover{transform:translateY(-2px);border-color:#e9ce83;filter:brightness(1.08)}
+.log .entry{padding-left:13px}
+.log .entry:before{width:4px;background:linear-gradient(var(--polish-jade),#e1bf72);box-shadow:0 0 9px #70d0c244}
+.art-event-scene{border-color:#d4bb80;box-shadow:inset 0 0 0 3px #0a182866,inset 0 0 30px #000b,0 9px 22px #02081788}
+.art-dialogue-portrait{position:relative;width:min(37%,158px);height:184px;margin:0 0 12px 14px;border:1px solid #f0d18c;border-radius:13px 13px 5px 5px;background:radial-gradient(ellipse at 52% 26%,#75c8c355,transparent 53%),linear-gradient(160deg,#243c53,#0a192b 75%);box-shadow:inset 0 0 0 4px #f0d18c1c,inset 0 0 22px #01091499,0 8px 20px #02081799;isolation:isolate}
+.art-dialogue-portrait:before,.art-dialogue-portrait:after{content:"";position:absolute;z-index:2;width:19px;height:19px;border-color:#e6ca85;pointer-events:none}
+.art-dialogue-portrait:before{top:5px;left:5px;border-top:1px solid;border-left:1px solid}
+.art-dialogue-portrait:after{right:5px;bottom:5px;border-right:1px solid;border-bottom:1px solid}
+.art-dialogue-portrait svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 5px 5px #0009)}
+.art-dialogue-speaker{position:absolute;left:6px;right:6px;bottom:7px;z-index:3;padding:5px 7px;border:1px solid #d8bf805e;border-radius:6px;background:linear-gradient(90deg,#071323f2,#14283be8);color:#ffe4a3;font-size:10px;line-height:1.3;text-align:center;text-shadow:0 1px #000;overflow-wrap:anywhere}
+.modalbody:has(.art-dialogue-portrait){min-height:175px}
+.xu-party-member{border-color:#d0b66a77;background:linear-gradient(145deg,#142b42,#0b1625);box-shadow:inset 0 1px #fff2,0 5px 13px #0004}
+.xu-party-member svg,.xu-party-member .xuan-painted-sprite{display:block;width:62px;height:82px;object-fit:contain;filter:drop-shadow(0 3px 4px #0008)}
+.battlebox,.xuan-battlebox{border-color:#e0c782;box-shadow:inset 0 0 0 3px #e0c78216,0 30px 90px #000c}
+.battleactions button:focus-visible,.town-map-canvas button:focus-visible{outline:2px solid #8be0d1;outline-offset:2px}
+@media(max-width:720px){
+ .town-map-canvas{min-height:440px}
+ .art-dialogue-portrait{width:34%;height:158px;margin-left:9px}
+ .town-home-header{padding:12px}
+}
+@media(max-width:430px){
+ .town-map-canvas{min-height:390px}
+ .art-dialogue-portrait{width:37%;height:138px}
+ .art-dialogue-speaker{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.town-map-building,.action-grid button,.town-home-actions button{transition:none!important}}
+
+
+/* Painted three-head sprites: reference-led, non-pixel character and creature art */
+.xuan-sd-portrait.xuan-painted-sprite{display:block;background-color:transparent;background-image:none;background-repeat:no-repeat;background-size:auto 100%;background-position:0 center;filter:drop-shadow(0 5px 5px #020817bb)}
+.xuan-painted-sprite[data-sheet="characters"],.art-dialogue-painted[data-sheet="characters"]{background-image:url("../art/three-head/characters-three-head-v1.webp")}
+.xuan-painted-sprite[data-sheet="monsters"]{background-image:url("../art/three-head/monsters-three-head-v1.webp")}
+.xuan-painted-sprite[data-sheet="monstersExpanded"]{background-image:url("../art/three-head/monsters-expanded-three-head-v1.webp")}
+.xuan-painted-sprite[data-sheet="classes"]{background-image:url("../art/three-head/classes-three-head-v1.webp")}
+.xuan-painted-sprite[data-sheet="npcs"],.art-dialogue-painted[data-sheet="npcs"]{background-image:url("../art/three-head/npcs-three-head-v1.webp")}
+.xuan-painted-sprite[data-index="1"],.art-dialogue-painted[data-index="1"]{background-position:33.333% center}
+.xuan-painted-sprite[data-index="2"],.art-dialogue-painted[data-index="2"]{background-position:66.667% center}
+.xuan-painted-sprite[data-index="3"],.art-dialogue-painted[data-index="3"]{background-position:100% center}
+.xuan-enemy-unit .xuan-painted-sprite{filter:drop-shadow(0 5px 8px #e38e6038)}
+.xuan-party-strip .xuan-painted-sprite{filter:drop-shadow(0 2px 3px #000a)}
+.art-dialogue-painted{position:absolute;inset:0;display:block;background-repeat:no-repeat;background-size:auto 100%;background-position:0 center;filter:drop-shadow(0 5px 6px #0009)}
+
+/* Facility scenes: fill the frame and keep hand-painted room detail readable. */
+.xu-store-scene{isolation:isolate;background:#171b1e}
+.xu-store-scene>svg{filter:brightness(1.02) saturate(1.05)}
+.xu-store-scene:after{background:linear-gradient(180deg,#07101955 0%,transparent 34%,transparent 72%,#07101933 100%),radial-gradient(ellipse at 50% 38%,transparent 32%,#09101833 100%)}
+
+/* CURRENT-1.109.0: original illustrated shop interiors with compact service controls */
+.xu-store-screen{gap:8px}
+.xu-store-scene{height:clamp(230px,34vh,300px);background:#171b1e}
+.xu-store-scene>img.xu-store-art{display:block;width:100%;height:100%;object-fit:cover;filter:brightness(1.04) saturate(1.04)}
+.xu-store-scene:after{background:linear-gradient(180deg,#07101944 0%,transparent 27%,transparent 72%,#09101844 100%),radial-gradient(ellipse at 50% 42%,transparent 42%,#09101822 100%)}
+.xu-store-plaque{position:absolute;z-index:2;top:9px;left:50%;transform:translateX(-50%);max-width:80%;padding:6px 18px;border:2px solid var(--store-accent,#e3ca8b);border-radius:7px;background:linear-gradient(180deg,#242528f2,#17191df2);box-shadow:0 3px 0 #080d12,0 4px 14px #0007,inset 0 1px #fff3;color:#fff1ce;text-align:center}
+.xu-store-plaque span{font-size:clamp(10px,2.7vw,13px);font-weight:900;letter-spacing:.16em;white-space:nowrap;text-shadow:0 1px #000}
+.xu-store-summary,.xu-store-caption,.xu-store-record{display:none!important}
+.xu-store-actions-primary{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.xu-store-action{min-height:76px;gap:3px;padding:6px 3px}
+.xu-store-action-icon{width:35px;height:35px}
+.xu-store-action-icon svg{width:27px;height:27px}
+.xu-store-action-label{gap:0}
+.xu-store-action-label strong{font-size:clamp(12px,3.3vw,14px)}
+.xu-store-action-label small{display:none!important}
+.xu-store-more{padding:8px}
+.xu-store-more>header{margin-bottom:6px}
+.xu-store-more>header span{display:none}
+.xu-store-actions-secondary{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.xu-store-action-secondary{min-height:58px;padding:5px}
+.xu-store-action-secondary .xu-store-action-icon{width:29px;height:29px}
+.xu-store-action-secondary .xu-store-action-icon svg{width:22px;height:22px}
+.xu-store-action-secondary .xu-store-action-label strong{font-size:11px}
+@media(max-width:400px){.xu-store-scene{height:220px}.xu-store-action{min-height:70px}.xu-store-action-icon{width:32px;height:32px}.xu-store-action-icon svg{width:25px;height:25px}.xu-store-actions-secondary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* CURRENT-1.119.0: database-bound class / monster portrait catalog */
+.ij-class-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.ij-class-card{min-height:156px!important;padding:8px!important;display:grid!important;grid-template-columns:72px minmax(0,1fr);gap:8px;align-items:center;text-align:left}
+.ij-class-card img{width:72px;height:124px;object-fit:contain;filter:drop-shadow(0 5px 5px #0009)}
+.ij-class-card span{min-width:0}.ij-class-card small{display:block;margin-top:5px;color:#b9c8d3;font-size:10px;line-height:1.35}
+.xuan-sd-portrait.ij-db-art{display:block;background:none!important;overflow:visible}
+.xuan-sd-portrait.ij-db-art img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 5px 6px #000a)}
+.xuan-stage-figure .ij-db-art{width:clamp(76px,14vw,118px);height:clamp(92px,18vw,142px)}
+.xuan-enemy-figure .ij-db-art{width:clamp(92px,18vw,142px);height:clamp(112px,23vw,170px)}
+@media(max-width:520px){
+ .ij-class-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ij-class-card{grid-template-columns:52px minmax(0,1fr);min-height:118px!important;padding:6px!important}
+ .ij-class-card img{width:52px;height:96px}
+}
+@media(max-width:340px){.ij-class-grid{grid-template-columns:1fr}}
+
