@@ -757,3 +757,10 @@ body.runtime-action-busy .modalbody button{pointer-events:none}
 .resist-poison{margin-top:8px}
 .modalbody .grid2>.card,.modalbody .grid3>.card,.modalbody .grid4>.card{min-width:0;overflow-wrap:anywhere}
 .modalbody .profile-value,.modalbody .resource-list-value{min-width:0;overflow-wrap:anywhere}
+
+/* v1.130 城鎮首頁：移除側欄、時間與位置各占一整行、旅人狀態置於當地地圖下方 */
+.town-home-header{grid-template-columns:minmax(0,1fr)}
+.town-home-layout{grid-template-columns:minmax(0,1fr)}
+.town-home-status .hud-meta.hud-meta-compact{grid-template-columns:minmax(0,1fr);gap:6px}
+.town-home-status .hud-meta-item.flat{padding:9px 12px}
+.town-home-status .hud-meta-item.flat>div:last-child,.town-home-status .hud-meta-item.flat #timeTop{white-space:normal;overflow:visible;text-overflow:clip;font-size:15px;line-height:1.35}
