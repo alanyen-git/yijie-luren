@@ -42,7 +42,7 @@ jobs:
           if-no-files-found: warn
       - name: Validate 異界旅人 and rebuild Android web bundle
         run: |
-          npm run test:qunlu-app
+          npm run test:game
           npm run prepare:android
           test ! -d www/app
           ! grep -q "正在切換至最新 App 同步版" www/index.html
@@ -64,7 +64,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           APK_PATH=android/app/build/outputs/apk/debug/app-debug.apk
-          VERSION="$(node -e 'const value=require("./qunlu-app/version.json").version; if(!value.startsWith("CURRENT-")) process.exit(1); process.stdout.write(value.slice(8))')"
+          VERSION="$(node -e 'const value=require("./game/version.json").version; if(!value.startsWith("CURRENT-")) process.exit(1); process.stdout.write(value.slice(8))')"
           RELEASE_TAG=android-apk-latest
           RELEASE_ASSET=yijie-luren-latest.apk
           cp "$APK_PATH" "$RELEASE_ASSET"

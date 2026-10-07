@@ -17,7 +17,7 @@ concurrency:
 jobs:
   deploy:
     environment:
-      name: github-pages-auto
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
@@ -27,11 +27,11 @@ jobs:
         with:
           node-version: 22
       - name: Validate 異界旅人 App source
-        run: npm run test:qunlu-app
+        run: npm run test:game
       - name: Delete old web build and create new web game
         run: npm run prepare:web
       - name: Validate new web bundle
-        run: npm run test:qunlu-bundle
+        run: npm run test:bundle
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload new web game
@@ -44,4 +44,4 @@ jobs:
       - name: Verify public version
         env:
           PAGES_URL: ${{ steps.deployment.outputs.page_url }}
-        run: node scripts/verify-qunlu-pages.cjs
+        run: node scripts/verify-pages.cjs
