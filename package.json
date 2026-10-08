@@ -1,7 +1,7 @@
 {
   "name": "yijie-luren",
   "private": true,
-  "version": "1.131.2",
+  "version": "1.133.0",
   "description": "異界旅人獨立 RPG 專案：網頁、PWA 與 Android 使用本專案程式與素材。",
   "scripts": {
     "test": "npm run test:game && npm run prepare:web && npm run test:bundle",
