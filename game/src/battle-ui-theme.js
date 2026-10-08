@@ -10,7 +10,7 @@ function replacePortraitArt(unit,art){
  const old=unit.querySelector(".xuan-sd-portrait");if(!old)return;
  const box=make("span","xuan-sd-portrait ij-atlas-art");
  box.dataset.artIndex=String(art.index);box.style.setProperty("--sprite-column",art.column);box.style.setProperty("--sprite-row",art.row);
- const img=document.createElement("img");img.src=art.src;img.alt="";img.decoding="async";box.appendChild(img);old.replaceWith(box)
+ if(Number(art.columns)>1||Number(art.rows)>1){const columns=Number(art.columns)||1,rows=Number(art.rows)||1,column=Number(art.column)||0,row=Number(art.row)||0;box.classList.add("ij-atlas-sheet");box.dataset.atlasColumns=String(columns);box.dataset.atlasRows=String(rows);box.style.backgroundImage=`url("${art.src}")`;box.style.backgroundSize=`${columns*100}% ${rows*100}%`;box.style.backgroundPosition=`${columns>1?column/(columns-1)*100:0}% ${rows>1?row/(rows-1)*100:0}%`}else{const img=document.createElement("img");img.src=art.src;img.alt="";img.decoding="async";box.appendChild(img)}old.replaceWith(box)
 }
 function wrapUnit(unit,type,extra=""){if(!unit||unit.querySelector(".xuan-sd-portrait"))return;unit.classList.add("xuan-unit-card");extra.split(/\s+/).filter(Boolean).forEach(token=>unit.classList.add(token));const avatar=portrait(type),info=make("div","xuan-unit-info");unit.insertBefore(avatar,unit.firstChild);while(unit.childNodes.length>1)info.appendChild(unit.childNodes[1]);unit.appendChild(info)}
 function miniPortrait(unit,type){if(unit&&!unit.querySelector(".xuan-sd-portrait"))unit.insertBefore(portrait(type),unit.firstChild)}
@@ -62,13 +62,15 @@ function decorate(){
    party.querySelectorAll(".party-mini").forEach((unit,index)=>{
     const role=unit.querySelector("span")?.textContent||["warrior","mage","scout","healer"][index%4];
     miniPortrait(unit,classPick(role));
-    replacePortraitArt(unit,globalThis.YijieBattleArt?.classByText?.(role));
+    const member=G?.battle?.party?.[index],art=member?.templateId?globalThis.YijieBattleArt?.characterById?.(member.templateId):null;
+    replacePortraitArt(unit,art||globalThis.YijieBattleArt?.classByText?.(role));
     const figure=stageFigure(unit,"xuan-party-figure");if(figure)allyFigures.appendChild(figure);
    });
   }
   if(comp){
    wrapUnit(comp,"familiar","xuan-companion-unit");
-   replacePortraitArt(comp,globalThis.YijieBattleArt?.monsterByText?.(G?.battle?.companion?.name||comp.textContent));
+   const companionArt=globalThis.YijieBattleArt?.petById?.(G?.battle?.companion?.speciesId)||globalThis.YijieBattleArt?.monsterByText?.(G?.battle?.companion?.name||comp.textContent);
+   replacePortraitArt(comp,companionArt);
    const figure=stageFigure(comp,"xuan-companion-figure");if(figure)allyFigures.appendChild(figure);
   }
   if(vs)vs.setAttribute("aria-hidden","true");
@@ -85,7 +87,7 @@ function decorate(){
   if(comp){
    const info=comp.querySelector(".xuan-unit-info"),name=info?.querySelector(":scope > b")?.textContent||"夥伴",role=info?.querySelector(".small")?.textContent||"同行夥伴",stats=Array.from(info?.querySelectorAll(":scope > div")||[]).find(el=>!el.classList.contains("small")&&!el.classList.contains("hpbar"))?.textContent||"";
    const pet=make("div","party-mini xuan-companion-mini");pet.setAttribute("aria-label",name+" 戰鬥狀態");miniPortrait(pet,"familiar");
-   replacePortraitArt(pet,globalThis.YijieBattleArt?.monsterByText?.(name));
+   replacePortraitArt(pet,globalThis.YijieBattleArt?.petById?.(G?.battle?.companion?.speciesId)||globalThis.YijieBattleArt?.monsterByText?.(name));
    const title=make("b");title.textContent=name;const subtitle=make("span");subtitle.textContent=role;const status=make("div");status.textContent=stats;pet.append(title,subtitle,status);
    const bar=info?.querySelector(".hpbar");if(bar)pet.appendChild(bar.cloneNode(true));roster.appendChild(pet);
   }
