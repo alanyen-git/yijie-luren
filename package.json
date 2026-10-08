@@ -1,11 +1,11 @@
 {
   "name": "yijie-luren",
   "private": true,
-  "version": "1.130.1",
+  "version": "1.131.0",
   "description": "異界旅人獨立 RPG 專案：網頁、PWA 與 Android 使用本專案程式與素材。",
   "scripts": {
     "test": "npm run test:game",
-    "test:game": "node tests/game.test.cjs && node tests/history-retention.test.cjs && node tests/runtime-stability.test.cjs && node tests/facility-shop-ui.test.cjs && node tests/battle-reference.test.cjs && node tests/project-isolation.test.cjs && node tests/player-name-safety.test.cjs",
+    "test:game": "node tests/game.test.cjs && node tests/history-retention.test.cjs && node tests/runtime-stability.test.cjs && node tests/facility-shop-ui.test.cjs && node tests/battle-reference.test.cjs && node tests/project-isolation.test.cjs && node tests/player-name-safety.test.cjs && node tests/portrait-index.test.cjs",
     "prepare:web": "node scripts/prepare-web-game.cjs",
     "prepare:app": "node scripts/prepare-app.cjs",
     "prepare:android": "node scripts/prepare-app.cjs",
