@@ -1,11 +1,12 @@
 {
-  "version": "CURRENT-1.131.1",
-  "previous_version": "CURRENT-1.131.0",
+  "version": "CURRENT-1.131.2",
+  "previous_version": "CURRENT-1.131.1",
   "channel": "web",
   "distribution_mode": "static_web",
   "entrypoint": "index.html",
   "summary": "異界旅人獨立專案：更新來源、App 識別碼、本機存檔與發佈設定分離。",
   "changelog": [
+    "1.131.2：修正職業與怪物的共用立繪配對（龍不再使用蜘蛛圖、蜘蛛與史萊姆不再使用老鼠圖、遊俠／盜賊／刺客不再使用吟遊詩人圖、神職不再使用劍士圖、獸人與巨人不再使用哥布林圖），配對改為名稱優先；移除 political-region-pack-v1.js 末尾造成語法錯誤的重複片段；新增 portrait-mapping 回歸測試並檢查立繪檔案皆存在。",
     "1.131.1：修正星導杖、時序杖、白蠟祈禱杖、骨木咒杖、燼火杖被誤設為長劍（射程1.2）的資料，改為法杖並對齊同級射程與手數；星導杖補上魔力，星導杖與時序杖移除法師無法滿足的力量需求；療術銀紋杖改為錘；EQ31 系列武器類別名稱統一；測試改為自動掃描 tests/ 全部檔案（含 portrait-index）並納入 CI。",
     "1.131.0：補齊所有角色與怪物的立繪資料庫索引；保留既有職業、角色與怪物立繪，僅新增 36 隻資料補丁怪物的原創三頭身戰鬥立繪，並納入離線快取。",
     "1.130.1：還原遺失的 App 圖示（離線快取與 PWA 安裝需要）、修正 Pages 部署驗證腳本、玩家名稱統一清理特殊字元以避免被當成 HTML 解析。",
@@ -36,7 +37,7 @@
   "save_compatible": true,
   "map_ui_revision": "XUANYUAN-MAP-UI-1.21",
   "battle_ui_revision": "BATTLE-REFERENCE-3.0",
-  "pwa_cache_revision": "v84",
+  "pwa_cache_revision": "v85",
   "home_ui_revision": "TOWN-MAP-HOME-1.6",
   "scene_art_revision": "ORIGINAL-MAP-SCENES-3.0",
   "dungeon_index_revision": "DUNGEON-INDEX-1.0",

@@ -3,43 +3,44 @@
 const VER="IJ-ART-CATALOG-3.0";
 const heroes="heroes";
 const monsters="monsters";
+// 配圖規則：名稱優先 → 戰鬥定位／武器 → 分類首段。
+// 不再把整段分類文字或英文標籤拿來做子字串比對（例如「爬蟲」含「蟲」、「invertebrate」含「rat」，
+// 曾讓龍配到蜘蛛圖、蜘蛛與史萊姆配到老鼠圖，遊俠／盜賊／刺客配到吟遊詩人圖）。
+// 規則依序比對，先命中者優先；順序即優先權。
+const CLASS_RULES=[
+ [14,/鍊金|煉金/],[15,/工匠|工兵|鐵匠/],[0,/魔劍|奧術騎士|戰鬥法師|劍舞/],[1,/聖騎|聖武|聖劍|守誓|聖盾/],
+ [7,/刺客|影刃|影舞|忍/],[13,/吟遊|詩人|舞者/],[12,/武僧|僧侶|拳|格鬥|徒手/],[10,/召喚|馴獸|馴龍|契約|精靈使/],
+ [9,/白魔|先知|預言|驅魔|牧師|祭司|神官|聖職|聖者|聖女|主教|治療|德魯伊|薩滿/],[11,/黑魔|惡魔術|巫|咒|死靈|血法|魔女/],
+ [8,/法師|術士|賢者|魔導|元素/],[5,/弓|弩|射手|遊俠|巡林|獵/],[6,/斥候|盜賊|海盜|飛刀/],[7,/匕首|影/],
+ [4,/槍|矛|長兵/],[3,/斧|狂戰|錘|鎚/],[2,/戰士|重裝|守衛|騎士|盾/]
+];
+const CLASS_CATEGORY_RULES=[[2,"戰士"],[8,"法師"],[5,"遊俠"],[9,"神職"]];
+const firstMatch=(rules,text)=>{for(const [index,pattern] of rules)if(pattern.test(text))return index;return null};
 function classIndex(c){
- const s=[c.name,c.category,c.combat_role,c.weapon_group].filter(Boolean).join(" ");
- if(/鍊金|煉金/.test(s))return 14;
- if(/工匠|工兵|鐵匠/.test(s))return 15;
- if(/魔劍|奧術騎士|戰鬥法師/.test(s))return 0;
- if(/聖騎|聖武|守誓|聖盾/.test(s))return 1;
- if(/吟遊|詩人|舞者/.test(s))return 13;
- if(/武僧|拳|格鬥/.test(s))return 12;
- if(/召喚|馴獸|契約|精靈使/.test(s))return 10;
- if(/牧師|祭司|神官|聖職|治療|德魯伊|薩滿/.test(s))return 9;
- if(/巫|咒|死靈|血法|魔女/.test(s))return 11;
- if(/法師|術士|賢者|魔導|元素/.test(s))return 8;
- if(/刺客|盜賊|匕首|影|忍/.test(s))return 7;
- if(/遊俠|巡林|獵人|斥候/.test(s))return 6;
- if(/弓|弩|射手/.test(s))return 5;
- if(/槍|矛|長兵/.test(s))return 4;
- if(/斧|狂戰|錘|鎚/.test(s))return 3;
- if(/戰士|重裝|守衛|騎士|盾/.test(s))return 2;
- return 0;
+ const byName=firstMatch(CLASS_RULES,String(c.name||""));
+ if(byName!==null)return byName;
+ const byRole=firstMatch(CLASS_RULES,[c.combat_role,c.weapon_group].filter(Boolean).join(" "));
+ if(byRole!==null)return byRole;
+ const head=String(c.category||"").split("／")[0];
+ const byCategory=CLASS_CATEGORY_RULES.find(([,key])=>head.includes(key));
+ return byCategory?byCategory[0]:0;
 }
+const MONSTER_RULES=[
+ [0,/史萊姆|軟泥|黏液|人魚|水元素/],[15,/鼠/],[13,/蜘蛛|蛛|蠍|蜂|甲蟲|獨角仙|蟻|蠕蟲|克拉肯/],
+ [14,/鷹|鴉|鳥|梟|隼|鷲|蝙蝠/],[5,/紅翼|炎魔/],[12,/龍|蜥|蛇|蟒|鱷|龜|娜迦|美杜莎|海德拉/],
+ [2,/^狼人/],[7,/骷髏|亡靈|不死|殭屍|食屍|屍妖|幽靈|幽魂|怨靈|惡靈|女妖|吸血|木乃伊|巫妖|死神|活鎧|活盔|無頭|死亡騎士|墓園|骸骨/],
+ [9,/石像鬼|魔像|傀儡|構裝|岩漿|土元素|石巨人/],[10,/火元素|雷元素|風元素|暴風元素|火.*精靈|炎.*精靈/],
+ [11,/冰元素|冰霜巨魔|冰.*巨獸/],[4,/惡魔|魔鬼|深淵|地獄/],[8,/(哥布林|地精).*(首領|王|酋長)|(首領|王|酋長).*(哥布林|地精)/],
+ [1,/哥布林|地精/],[6,/人型|獸人|巨人|巨魔|食人魔|牛頭人|盜匪|強盜|劫匪|逃兵/],[3,/野豬|豬/]
+];
+// 名稱沒有命中時才看分類（只比對分類名稱本身），最後落在野獸造型。
+const MONSTER_CATEGORY_RULES=[[7,"不死"],[4,"惡魔"],[1,"哥布林"],[12,"龍"],[6,"人型"]];
 function monsterIndex(m){
- const s=[m.name,m.category,...(m.ecology_profile?.tags||[])].join(" ");
- if(/鼠|rat|rodent/i.test(s))return 15;
- if(/鳥|鷹|鴉|bird/i.test(s))return 14;
- if(/蟲|蛛|蠍|蜂|甲蟲|insect/i.test(s))return 13;
- if(/冰|霜|雪/.test(s)&&/元素|巨獸|巨魔/.test(s))return 11;
- if(/火|炎|熔|焰/.test(s)&&/元素|精靈/.test(s))return 10;
- if(/石|岩|構裝|魔像|傀儡/.test(s))return 9;
- if(/龍|飛龍|蜥|蛇/.test(s))return 12;
- if(/骷髏|亡靈|不死|殭屍|幽靈/.test(s))return 7;
- if(/紅翼|炎魔/.test(s))return 5;
- if(/惡魔|魔鬼|深淵|地獄/.test(s))return 4;
- if(/哥布林|地精/.test(s))return /首領|王|酋長/.test(s)?8:1;
- if(/人型|獸人|巨人|食人魔|盜匪/.test(s))return 6;
- if(/軟泥|史萊姆|黏液/.test(s))return 0;
- if(/野豬|豬|boar/i.test(s))return 3;
- return 2;
+ const byName=firstMatch(MONSTER_RULES,String(m.name||""));
+ if(byName!==null)return byName;
+ const cat=String(m.category||"");
+ const byCategory=MONSTER_CATEGORY_RULES.find(([,key])=>cat.includes(key));
+ return byCategory?byCategory[0]:2;
 }
 const frame=(kind,index)=>({src:`./assets/art/three-head/battle-${kind}-${index}.webp`,index,columns:1,rows:1,column:0,row:0});
 function assign(record,kind,index){
