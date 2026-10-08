@@ -1,5 +1,5 @@
 const CACHE_PREFIX="yijie-luren-pwa-";
-const CACHE_NAME=CACHE_PREFIX+"v86";
+const CACHE_NAME=CACHE_PREFIX+"v87";
 const CORE=["./project.json",
 "./assets/art/three-head/battle-heroes-0.webp",
 "./assets/art/three-head/battle-heroes-1.webp",
@@ -86,6 +86,7 @@ const CORE=["./project.json",
 "./src/asdail-depth-v2.js",
 "./src/political-region-pack-v1.js",
 "./src/map-inference-pack-v1.js",
+"./src/town-completeness-v1.js",
 "./src/combat-scale-v2.js",
 "./src/battle-art-catalog-v2.js",
 "./src/portrait-index-v1.js",
